@@ -2,14 +2,22 @@ package main
 
 import (
     "fmt"
-    "math/rand"
+	"math/rand"
 	"time"
     "strings"
+
 )
 
 func main() {
-    rand.Seed(time.Now().UnixNano())
-    words := []string{"golang", "mot", "test", "truc"} // Le mot à deviner
+	rand.Seed(time.Now().UnixNano())
+    words := []string{"leave", "good", "thing", "child", "young", "little",
+	"great", "tractor", "chicken", "expensive", "photograph", "generous",
+	"butterfly", "success", "lollipop", "answer", "Beautiful",
+	"bridge", "country", "bucket", "beauty", "hundred", "thousand", "student", "slowly",
+	"window", "pattern", "sentence", "school", "mountain", "summer", "winter",
+	"thing", "probably", "upstairs", "everything", "remember", "clothes", "shoulder",
+	"himself", "perhaps", "always", "birthday", "forgive", "become", "shower",
+	"strawberry", "walking", "yellow"} // Le mot à deviner
 	wordToGuess := words[rand.Intn(len(words))]
     guessedWord := make([]string, len(wordToGuess))
 
