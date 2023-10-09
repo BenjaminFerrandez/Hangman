@@ -2,11 +2,15 @@ package main
 
 import (
     "fmt"
+    "math/rand"
+	"time"
     "strings"
 )
 
 func main() {
-    wordToGuess := "golang" // Le mot à deviner
+    rand.Seed(time.Now().UnixNano())
+    words := []string{"golang", "mot", "test", "truc"} // Le mot à deviner
+	wordToGuess := words[rand.Intn(len(words))]
     guessedWord := make([]string, len(wordToGuess))
 
     for i := range guessedWord {
