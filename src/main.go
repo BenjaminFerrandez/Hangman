@@ -7,8 +7,9 @@ import (
 
 var choice string
 
+//premiere fonction
 func main() {
-	fmt.Println("Bienvenue dans le jeu du pendu")
+	fmt.Println("Welcome in our Hangman game!")
 	fmt.Println("\nClick 's' to start or 'q' to quit")
 
 	fmt.Scanln(&choice)
