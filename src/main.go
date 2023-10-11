@@ -3,12 +3,20 @@ package main
 import (
 	"fmt"
 	"os"
+	"github.com/hajimehoshi/ebiten" //import de bibliotheque ebiten pour graphique
+
+)
+const ( //taille de l'écran
+	screenWidth  = 1280
+	screenHeight = 940
 )
 
 var choice string
 
 //premiere fonction
 func main() {
+
+	ebiten.Run(screen, screenWidth, screenHeight, 1, "Hangman game") //titre
 	fmt.Println("Welcome in our Hangman game!")
 	fmt.Println("\nClick 's' to start or 'q' to quit")
 
