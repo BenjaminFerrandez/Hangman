@@ -18,12 +18,17 @@ type Button struct { //caractéristique des boutons
 	Label               string
 	Image               *ebiten.Image
 	Active              bool
+	TextColor           color.Color
 }
 
 var (
 	backgroundImg *ebiten.Image
 	buttons          []Button
 	Font            font.Face
+	colorBlack  = color.RGBA{0, 0, 0, 255}
+  
+    colorRed    = color.RGBA{255, 0, 0, 255}
+ 
 )
 
 func init() {
@@ -80,21 +85,28 @@ func screen(screen *ebiten.Image) error {
 		return err
 	}
 	for _, button := range buttons {
-		color := color.Black
+		button.TextColor = colorBlack
 		if button.Active {
+			mouseX, mouseY := ebiten.CursorPosition()
+			if mouseX >= button.X && mouseX <= button.X+button.Width && mouseY >= button.Y && mouseY <= button.Y+button.Height {
+			button.TextColor = colorRed
+			}
 			if ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
-				mouseX, mouseY := ebiten.CursorPosition()
+			
+				
 				if mouseX >= button.X && mouseX <= button.X+button.Width && mouseY >= button.Y && mouseY <= button.Y+button.Height {
 					// button click
+					
 					if button.Label == "Play" {
-						return fmt.Errorf("Play")
-					} else if button.Label == "Quit" {
-						fmt.Println("Goodbye!")
-						os.Exit(0)
-					}
-				}
-			}
-		}
+                        return fmt.Errorf("Play")
+                    } else if button.Label == "Quit" {
+                        fmt.Println("Goodbye!")
+                        os.Exit(0)
+                    }
+                }
+        
+            }
+        }
 
 		// Draw the button image
 		op := &ebiten.DrawImageOptions{}
@@ -102,7 +114,7 @@ func screen(screen *ebiten.Image) error {
 		screen.DrawImage(button.Image, op)
 
 		// Draw the button label
-		text.Draw(screen, button.Label, Font, button.X+65, button.Y+45, color)
+		text.Draw(screen, button.Label, Font, button.X+65, button.Y+45, button.TextColor)
 	}
 	return nil
 

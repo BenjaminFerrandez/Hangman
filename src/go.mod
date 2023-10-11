@@ -1,4 +1,4 @@
-module example.com/m
+module pendu
 
 go 1.18
 
