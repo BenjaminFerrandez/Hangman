@@ -16,7 +16,7 @@ var choice string
 //premiere fonction
 func main() {
 
-	ebiten.Run(screen, screenWidth, screenHeight, 1, "Hangman game") //titre
+	ebiten.Run(update, screenWidth, screenHeight, 1, "Hangman game") //titre
 	fmt.Println("Welcome in our Hangman game!")
 	fmt.Println("\nClick 's' to start or 'q' to quit")
 
