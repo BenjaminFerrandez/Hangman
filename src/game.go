@@ -401,7 +401,6 @@ func pendu(screen *ebiten.Image) error {
 		}
 
 	}
-
 	return nil
 }
 
