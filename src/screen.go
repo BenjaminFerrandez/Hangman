@@ -23,7 +23,6 @@ type Button struct { //caractéristique des boutons
 
 var ( //initialisation des variables
 	words          = []string{""}
-	blancImg       *ebiten.Image
 	backgroundImg  *ebiten.Image
 	Font           font.Face
 	colorBlack     = color.RGBA{0, 0, 0, 255}
@@ -54,11 +53,7 @@ func init() { //met en place les images et boutons du jeu
 		panic(err)
 	}
 	backgroundImg = img
-	blanc, _, err := ebitenutil.NewImageFromFile("./images/blanc.png", ebiten.FilterDefault)
-	if err != nil {
-		panic(err)
-	}
-	blancImg = blanc
+	
 	fontData, err := ioutil.ReadFile("./images/FFF_Tusj.ttf")
 	if err != nil {
 		log.Fatal(err)
