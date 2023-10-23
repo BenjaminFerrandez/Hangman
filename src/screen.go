@@ -260,7 +260,6 @@ var chosenWord string
 func pendu(screen *ebiten.Image) error {
     screen.Fill(color.White)
 
-
     if chosenWord == "" {
         rand.Seed(time.Now().UnixNano())
         chosenWord = words[rand.Intn(len(words))]
@@ -268,11 +267,20 @@ func pendu(screen *ebiten.Image) error {
 
     guessedWord := make([]string, len(chosenWord))
 
-    text.Draw(screen, "GAME", Font, 500, 500, colorBlack)
+    text.Draw(screen, "Tentatives restantes :", Font, 20, 50, colorBlack)
     for i := range guessedWord {
         guessedWord[i] = "_"
     }
-    text.Draw(screen, strings.Join(guessedWord, " "), Font, 600, 600, colorBlack)
+
+	if gameInMenu == 2 {
+		text.Draw(screen, strings.Join(guessedWord, " "), Font, 575, 600, colorBlack)
+	} else if gameInMenu == 3 {
+		text.Draw(screen, strings.Join(guessedWord, " "), Font, 550, 600, colorBlack)
+	} else if gameInMenu == 4 {
+		text.Draw(screen, strings.Join(guessedWord, " "), Font, 500, 600, colorBlack)
+	} else if gameInMenu == 5 {
+		text.Draw(screen, strings.Join(guessedWord, " "), Font, 450, 600, colorBlack)
+	}
 
     for _, button := range gameMenu.Buttons {
         button.TextColor = colorBlack
@@ -298,4 +306,3 @@ func update(screen *ebiten.Image) error {
 	}
 	return nil
 }
-
