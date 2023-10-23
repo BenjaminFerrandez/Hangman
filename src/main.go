@@ -18,7 +18,7 @@ func main() {
 
 	ebiten.Run(update, screenWidth, screenHeight, 1, "Hangman game") //titre
 	fmt.Println("Welcome in our Hangman game!")
-	fmt.Println("\nClick 's' to start or 'q' to quit")
+	fmt.Println("\nClick 's' to start or 'q' to quit") //jouer ou quitter
 
 	fmt.Scanln(&choice)
 	switch choice {

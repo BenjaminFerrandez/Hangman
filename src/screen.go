@@ -26,7 +26,7 @@ type Button struct { //caractéristique des boutons
 	TextColor           color.Color
 }
 
-var (
+var ( //initialisation des variables
 	words          = []string{""}
 	blancImg       *ebiten.Image
 	backgroundImg  *ebiten.Image
@@ -50,6 +50,7 @@ type GameMenu struct {
 	Buttons []Button
 }
 
+//met en place les images et boutons du jeu
 func init() {
 	// Download image
 	img, _, err := ebitenutil.NewImageFromFile("./images/fond.png", ebiten.FilterDefault) //chemin du fichier
@@ -62,7 +63,7 @@ func init() {
 		panic(err)
 	}
 	blancImg = blanc
-	fontData, err := ioutil.ReadFile("./images/FFF_Tusj.ttf")
+	fontData, err := ioutil.ReadFile("./images/FFF_Tusj.ttf") //police d'écriture
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -97,9 +98,10 @@ func init() {
 		{X: 720, Y: 450, Width: 170, Height: 60, Label: "Play", Image: playImg, Active: true},
 		{X: 720, Y: 550, Width: 170, Height: 60, Label: "Quit", Image: quitImg, Active: true},
 	}
+
 	easyImg, _, err := ebitenutil.NewImageFromFile("./images/Picsart.png", ebiten.FilterDefault)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal(err) //pour vérifier si on clique sur le boutons
 	}
 
 	mediumImg, _, err := ebitenutil.NewImageFromFile("./images/Picsart.png", ebiten.FilterDefault)
@@ -138,7 +140,7 @@ func init() {
 	//log.Fatal(err)
 	//}
 
-	gameMenu.Buttons = []Button{
+	gameMenu.Buttons = []Button{ //placement des boutons de lettre
 		{X: 300, Y: 650, Width: 200, Height: 0, Label: "A", Image: bkgImg, Active: true},
 		{X: 350, Y: 650, Width: 200, Height: 0, Label: "B", Image: bkgImg, Active: true},
 		{X: 400, Y: 650, Width: 200, Height: 0, Label: "C", Image: bkgImg, Active: true},
@@ -167,6 +169,8 @@ func init() {
 		{X: 900, Y: 700, Width: 200, Height: 0, Label: "Z", Image: bkgImg, Active: true},
 	}
 }
+
+//lance ou quitte le jeu
 func Main(screen *ebiten.Image) error {
 	if err := screen.DrawImage(backgroundImg, nil); err != nil {
 		return err
@@ -182,7 +186,6 @@ func Main(screen *ebiten.Image) error {
 			if ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
 				if mouseX >= button.X && mouseX <= button.X+button.Width && mouseY >= button.Y && mouseY <= button.Y+button.Height {
 					if button.Label == "Play" {
-
 						gameInMenu = 1
 					} else if button.Label == "Quit" {
 						fmt.Println("Goodbye!")
@@ -200,6 +203,8 @@ func Main(screen *ebiten.Image) error {
 	}
 	return nil
 }
+
+//choix du niveau
 func Difficulty(screen *ebiten.Image) error {
 	if err := screen.DrawImage(backgroundImg, nil); err != nil {
 		return err
@@ -239,14 +244,11 @@ func Difficulty(screen *ebiten.Image) error {
 							gameInMenu = 5
 						
 					} else if button.Label == "Return" {
-		
 							gameInMenu = 0
-						
 					}
 				}
 			}
 		}
-
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Translate(float64(button.X), float64(button.Y))
 		screen.DrawImage(button.Image, op)
@@ -257,6 +259,7 @@ func Difficulty(screen *ebiten.Image) error {
 }
 var chosenWord string
 
+//jeu
 func pendu(screen *ebiten.Image) error {
     screen.Fill(color.White)
 
@@ -266,12 +269,10 @@ func pendu(screen *ebiten.Image) error {
     }
 
     guessedWord := make([]string, len(chosenWord))
-
-    text.Draw(screen, "Tentatives restantes :", Font, 20, 50, colorBlack)
+    text.Draw(screen, "Atempts remaining :", Font, 20, 50, colorBlack)
     for i := range guessedWord {
         guessedWord[i] = "_"
     }
-
 	if gameInMenu == 2 {
 		text.Draw(screen, strings.Join(guessedWord, " "), Font, 575, 600, colorBlack)
 	} else if gameInMenu == 3 {
@@ -281,7 +282,6 @@ func pendu(screen *ebiten.Image) error {
 	} else if gameInMenu == 5 {
 		text.Draw(screen, strings.Join(guessedWord, " "), Font, 450, 600, colorBlack)
 	}
-
     for _, button := range gameMenu.Buttons {
         button.TextColor = colorBlack
         op := &ebiten.DrawImageOptions{}
@@ -290,14 +290,12 @@ func pendu(screen *ebiten.Image) error {
 
         text.Draw(screen, button.Label, Font, button.X+13, button.Y+34, button.TextColor)
     }
-
     return nil
 }
 
+//relance une partie ou quitte le jeu
 func update(screen *ebiten.Image) error {
-
 	if gameInMenu == 1 {
-
 		return Difficulty(screen)
 	} else if gameInMenu == 0 {
 		return Main(screen)
