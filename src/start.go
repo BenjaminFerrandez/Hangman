@@ -50,7 +50,7 @@ func start() {
     fmt.Print("\033[H\033[2J")
 
     for attempts > 0 {
-        fmt.Println("\nWord to find: ", strings.Join(guessedWord, " "))
+        fmt.Println("\nWord to find: ", strings.Join(guessedWord, " ")) 
         fmt.Printf("attempts remaining: %d\n", attempts)
 
         var guess string
