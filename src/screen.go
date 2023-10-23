@@ -666,8 +666,16 @@ func pendu(screen *ebiten.Image) error {
 		op.GeoM.Translate(float64(button.X), float64(button.Y))
 		screen.DrawImage(button.Image, op)
 
-		text.Draw(screen, button.Label, Font, button.X+13, button.Y+34, button.TextColor)
-		text.Draw(screen, strings.Join(guessedWord, " "), Font, 500, 600, button.TextColor)
+		text.Draw(screen, button.Label, Font, button.X+13, button.Y+34, colorBlack)
+		if gameInMenu == 2 {
+			text.Draw(screen, strings.Join(guessedWord, " "), Font, 575, 600, colorBlack)
+		} else if gameInMenu == 3 {
+			text.Draw(screen, strings.Join(guessedWord, " "), Font, 550, 600, colorBlack)
+		} else if gameInMenu == 4 {
+			text.Draw(screen, strings.Join(guessedWord, " "), Font, 500, 600, colorBlack)
+		} else if gameInMenu == 5 {
+			text.Draw(screen, strings.Join(guessedWord, " "), Font, 450, 600, colorBlack)
+		}
 
 	}
 
