@@ -1,13 +1,59 @@
 package main
 
 import (
+	"fmt"
 	"image/color"
-	"strings"
 	"math/rand"
+	"os"
+	"strings"
 	"time"
+
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/text"
 )
+
+var (
+	chosenWord     string
+	selectedLetter rune
+	// To keep track of the selected letter
+	guessedLetters  []rune
+	selectedLetters []rune
+)
+
+//lance ou quitte le jeu
+func Main(screen *ebiten.Image) error {
+	if err := screen.DrawImage(backgroundImg, nil); err != nil {
+		return err
+	}
+
+	for _, button := range mainMenu.Buttons {
+		button.TextColor = colorBlack
+		if button.Active {
+			mouseX, mouseY := ebiten.CursorPosition()
+			if mouseX >= button.X && mouseX <= button.X+button.Width && mouseY >= button.Y && mouseY <= button.Y+button.Height {
+				button.TextColor = colorRed
+			}
+			if ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
+				if mouseX >= button.X && mouseX <= button.X+button.Width && mouseY >= button.Y && mouseY <= button.Y+button.Height {
+					if button.Label == "Play" {
+
+						gameInMenu = 1
+					} else if button.Label == "Quit" {
+						fmt.Println("Goodbye!")
+						os.Exit(0)
+					}
+				}
+			}
+		}
+
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Translate(float64(button.X), float64(button.Y))
+		screen.DrawImage(button.Image, op)
+
+		text.Draw(screen, button.Label, Font, button.X+65, button.Y+45, button.TextColor)
+	}
+	return nil
+}
 
 //choix du niveau
 func Difficulty(screen *ebiten.Image) error {
@@ -56,9 +102,11 @@ func Difficulty(screen *ebiten.Image) error {
 				}
 			}
 		}
+
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Translate(float64(button.X), float64(button.Y))
 		screen.DrawImage(button.Image, op)
+
 		text.Draw(screen, button.Label, Font, button.X+45, button.Y+45, button.TextColor)
 	}
 	return nil
@@ -72,6 +120,7 @@ func pendu(screen *ebiten.Image) error {
 		rand.Seed(time.Now().UnixNano())
 		chosenWord = words[rand.Intn(len(words))]
 	}
+
 	guessedWord := make([]string, len(chosenWord))
 	text.Draw(screen, "Atempts remaining :", Font, 20, 50, colorBlack)
 
@@ -81,6 +130,7 @@ func pendu(screen *ebiten.Image) error {
 
 	for _, button := range gameMenu.Buttons {
 		button.TextColor = colorBlack
+
 		mouseX, mouseY := ebiten.CursorPosition()
 		if mouseX >= button.X && mouseX <= button.X+button.Width && mouseY >= button.Y && mouseY <= button.Y+button.Height {
 			button.TextColor = colorRed
@@ -92,299 +142,220 @@ func pendu(screen *ebiten.Image) error {
 				if mouseX >= button.X && mouseX <= button.X+button.Width && mouseY >= button.Y && mouseY <= button.Y+button.Height {
 					if button.Label == "A" {
 						selectedLetter = rune('a')
+
 						if selectedLetter != 0 {
 							if strings.Contains(chosenWord, string(selectedLetter)) {
-								for i, char := range chosenWord {
-									if rune(char) == selectedLetter {
-										guessedWord[i] = string(selectedLetter)
-									}
-								}
+								selectedLetters = append(selectedLetters, selectedLetter)
 							}
 						}
 					} else if button.Label == "B" {
 						selectedLetter = rune('b')
+
 						if selectedLetter != 0 {
 							if strings.Contains(chosenWord, string(selectedLetter)) {
-								for i, char := range chosenWord {
-									if rune(char) == selectedLetter {
-										guessedWord[i] = string(selectedLetter)
-									}
-								}
+								selectedLetters = append(selectedLetters, selectedLetter)
 							}
 						}
 					} else if button.Label == "C" {
 						selectedLetter = rune('c')
+
 						if selectedLetter != 0 {
 							if strings.Contains(chosenWord, string(selectedLetter)) {
-								for i, char := range chosenWord {
-									if rune(char) == selectedLetter {
-										guessedWord[i] = string(selectedLetter)
-									}
-								}
+								selectedLetters = append(selectedLetters, selectedLetter)
 							}
 						}
 					} else if button.Label == "D" {
 						selectedLetter = rune('d')
+
 						if selectedLetter != 0 {
 							if strings.Contains(chosenWord, string(selectedLetter)) {
-								for i, char := range chosenWord {
-									if rune(char) == selectedLetter {
-										guessedWord[i] = string(selectedLetter)
-									}
-								}
+								selectedLetters = append(selectedLetters, selectedLetter)
 							}
 						}
 					} else if button.Label == "E" {
 						selectedLetter = rune('e')
+
 						if selectedLetter != 0 {
 							if strings.Contains(chosenWord, string(selectedLetter)) {
-								for i, char := range chosenWord {
-									if rune(char) == selectedLetter {
-										guessedWord[i] = string(selectedLetter)
-									}
-								}
+								selectedLetters = append(selectedLetters, selectedLetter)
 							}
 						}
 					} else if button.Label == "F" {
 						selectedLetter = rune('f')
+
 						if selectedLetter != 0 {
 							if strings.Contains(chosenWord, string(selectedLetter)) {
-								for i, char := range chosenWord {
-									if rune(char) == selectedLetter {
-										guessedWord[i] = string(selectedLetter)
-									}
-								}
+								selectedLetters = append(selectedLetters, selectedLetter)
 							}
 						}
 					} else if button.Label == "G" {
 						selectedLetter = rune('g')
+
 						if selectedLetter != 0 {
 							if strings.Contains(chosenWord, string(selectedLetter)) {
-								for i, char := range chosenWord {
-									if rune(char) == selectedLetter {
-										guessedWord[i] = string(selectedLetter)
-									}
-								}
+								selectedLetters = append(selectedLetters, selectedLetter)
 							}
 						}
 					} else if button.Label == "H" {
 						selectedLetter = rune('h')
+
 						if selectedLetter != 0 {
 							if strings.Contains(chosenWord, string(selectedLetter)) {
-								for i, char := range chosenWord {
-									if rune(char) == selectedLetter {
-										guessedWord[i] = string(selectedLetter)
-									}
-								}
+								selectedLetters = append(selectedLetters, selectedLetter)
 							}
 						}
 					} else if button.Label == "I" {
 						selectedLetter = rune('i')
+
 						if selectedLetter != 0 {
 							if strings.Contains(chosenWord, string(selectedLetter)) {
-								for i, char := range chosenWord {
-									if rune(char) == selectedLetter {
-										guessedWord[i] = string(selectedLetter)
-									}
-								}
+								selectedLetters = append(selectedLetters, selectedLetter)
 							}
 						}
 					} else if button.Label == "J" {
 						selectedLetter = rune('j')
+
 						if selectedLetter != 0 {
 							if strings.Contains(chosenWord, string(selectedLetter)) {
-								for i, char := range chosenWord {
-									if rune(char) == selectedLetter {
-										guessedWord[i] = string(selectedLetter)
-									}
-								}
+								selectedLetters = append(selectedLetters, selectedLetter)
 							}
 						}
 					} else if button.Label == "K" {
 						selectedLetter = rune('k')
+
 						if selectedLetter != 0 {
 							if strings.Contains(chosenWord, string(selectedLetter)) {
-								for i, char := range chosenWord {
-									if rune(char) == selectedLetter {
-										guessedWord[i] = string(selectedLetter)
-									}
-								}
+								selectedLetters = append(selectedLetters, selectedLetter)
 							}
 						}
 					} else if button.Label == "L" {
 						selectedLetter = rune('l')
+
 						if selectedLetter != 0 {
 							if strings.Contains(chosenWord, string(selectedLetter)) {
-								for i, char := range chosenWord {
-									if rune(char) == selectedLetter {
-										guessedWord[i] = string(selectedLetter)
-									}
-								}
+								selectedLetters = append(selectedLetters, selectedLetter)
 							}
 						}
 					} else if button.Label == "M" {
 						selectedLetter = rune('m')
+
 						if selectedLetter != 0 {
 							if strings.Contains(chosenWord, string(selectedLetter)) {
-								for i, char := range chosenWord {
-									if rune(char) == selectedLetter {
-										guessedWord[i] = string(selectedLetter)
-									}
-								}
+								selectedLetters = append(selectedLetters, selectedLetter)
 							}
 						}
 					} else if button.Label == "N" {
 						selectedLetter = rune('n')
+
 						if selectedLetter != 0 {
 							if strings.Contains(chosenWord, string(selectedLetter)) {
-								for i, char := range chosenWord {
-									if rune(char) == selectedLetter {
-										guessedWord[i] = string(selectedLetter)
-									}
-								}
+								selectedLetters = append(selectedLetters, selectedLetter)
 							}
 						}
 					} else if button.Label == "O" {
 						selectedLetter = rune('o')
+
 						if selectedLetter != 0 {
 							if strings.Contains(chosenWord, string(selectedLetter)) {
-								for i, char := range chosenWord {
-									if rune(char) == selectedLetter {
-										guessedWord[i] = string(selectedLetter)
-									}
-								}
+								selectedLetters = append(selectedLetters, selectedLetter)
 							}
 						}
 					} else if button.Label == "P" {
 						selectedLetter = rune('p')
+
 						if selectedLetter != 0 {
 							if strings.Contains(chosenWord, string(selectedLetter)) {
-								for i, char := range chosenWord {
-									if rune(char) == selectedLetter {
-										guessedWord[i] = string(selectedLetter)
-									}
-								}
+								selectedLetters = append(selectedLetters, selectedLetter)
 							}
 						}
 					} else if button.Label == "Q" {
 						selectedLetter = rune('q')
+
 						if selectedLetter != 0 {
 							if strings.Contains(chosenWord, string(selectedLetter)) {
-								for i, char := range chosenWord {
-									if rune(char) == selectedLetter {
-										guessedWord[i] = string(selectedLetter)
-									}
-								}
+								selectedLetters = append(selectedLetters, selectedLetter)
 							}
 						}
 					} else if button.Label == "R" {
 						selectedLetter = rune('r')
+
 						if selectedLetter != 0 {
 							if strings.Contains(chosenWord, string(selectedLetter)) {
-								for i, char := range chosenWord {
-									if rune(char) == selectedLetter {
-										guessedWord[i] = string(selectedLetter)
-									}
-								}
+								selectedLetters = append(selectedLetters, selectedLetter)
 							}
 						}
 					} else if button.Label == "S" {
 						selectedLetter = rune('s')
+
 						if selectedLetter != 0 {
 							if strings.Contains(chosenWord, string(selectedLetter)) {
-								for i, char := range chosenWord {
-									if rune(char) == selectedLetter {
-										guessedWord[i] = string(selectedLetter)
-									}
-								}
+								selectedLetters = append(selectedLetters, selectedLetter)
 							}
 						}
 					} else if button.Label == "T" {
 						selectedLetter = rune('t')
+
 						if selectedLetter != 0 {
 							if strings.Contains(chosenWord, string(selectedLetter)) {
-								for i, char := range chosenWord {
-									if rune(char) == selectedLetter {
-										guessedWord[i] = string(selectedLetter)
-									}
-								}
+								selectedLetters = append(selectedLetters, selectedLetter)
 							}
 						}
 					} else if button.Label == "U" {
 						selectedLetter = rune('u')
+
 						if selectedLetter != 0 {
 							if strings.Contains(chosenWord, string(selectedLetter)) {
-								for i, char := range chosenWord {
-									if rune(char) == selectedLetter {
-										guessedWord[i] = string(selectedLetter)
-									}
-								}
+								selectedLetters = append(selectedLetters, selectedLetter)
 							}
 						}
 					} else if button.Label == "V" {
 						selectedLetter = rune('v')
+
 						if selectedLetter != 0 {
 							if strings.Contains(chosenWord, string(selectedLetter)) {
-								for i, char := range chosenWord {
-									if rune(char) == selectedLetter {
-										guessedWord[i] = string(selectedLetter)
-									}
-								}
+								selectedLetters = append(selectedLetters, selectedLetter)
 							}
 						}
 					} else if button.Label == "W" {
 						selectedLetter = rune('w')
+
 						if selectedLetter != 0 {
 							if strings.Contains(chosenWord, string(selectedLetter)) {
-								for i, char := range chosenWord {
-									if rune(char) == selectedLetter {
-										guessedWord[i] = string(selectedLetter)
-									}
-								}
+								selectedLetters = append(selectedLetters, selectedLetter)
 							}
 						}
 					} else if button.Label == "X" {
 						selectedLetter = rune('x')
+
 						if selectedLetter != 0 {
 							if strings.Contains(chosenWord, string(selectedLetter)) {
-								for i, char := range chosenWord {
-									if rune(char) == selectedLetter {
-										guessedWord[i] = string(selectedLetter)
-									}
-								}
+								selectedLetters = append(selectedLetters, selectedLetter)
 							}
 						}
 					} else if button.Label == "Y" {
 						selectedLetter = rune('y')
+
 						if selectedLetter != 0 {
 							if strings.Contains(chosenWord, string(selectedLetter)) {
-
-								for i, char := range chosenWord {
-									if rune(char) == selectedLetter {
-										guessedWord[i] = string(selectedLetter)
-									}
-								}
-
+								selectedLetters = append(selectedLetters, selectedLetter)
 							}
 						}
 					} else if button.Label == "Z" {
 						selectedLetter = rune('z')
+
 						if selectedLetter != 0 {
 							if strings.Contains(chosenWord, string(selectedLetter)) {
-
-								for i, char := range chosenWord {
-									if rune(char) == selectedLetter {
-										guessedWord[i] = string(selectedLetter)
-									}
-								}
-
+								selectedLetters = append(selectedLetters, selectedLetter)
 							}
 						}
 					}
+
 					break
 				}
 			}
 		}
+		guessedWord = updateGuessedWord(chosenWord, selectedLetters)
+
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Translate(float64(button.X), float64(button.Y))
 		screen.DrawImage(button.Image, op)
@@ -401,6 +372,7 @@ func pendu(screen *ebiten.Image) error {
 		}
 
 	}
+
 	return nil
 }
 
@@ -416,4 +388,26 @@ func update(screen *ebiten.Image) error {
 		return pendu(screen)
 	}
 	return nil
+}
+func updateGuessedWord(word string, guessedLetters []rune) []string {
+	guessedWord := make([]string, len(word))
+
+	for i, char := range word {
+		if contains(guessedLetters, char) {
+			guessedWord[i] = string(char)
+		} else {
+			guessedWord[i] = "_"
+		}
+	}
+
+	return guessedWord
+}
+
+func contains(arr []rune, r rune) bool {
+	for _, v := range arr {
+		if v == r {
+			return true
+		}
+	}
+	return false
 }

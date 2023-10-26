@@ -1,14 +1,12 @@
 package main
 
 import (
-	"fmt"
 	"image/color"
 	"io/ioutil"
 	"log"
-	"os"
+
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
-	"github.com/hajimehoshi/ebiten/text"
 	"golang.org/x/image/font"
 	"golang.org/x/image/font/opentype"
 )
@@ -22,7 +20,8 @@ type Button struct { //caractéristique des boutons
 }
 
 var ( //initialisation des variables
-	words          = []string{""}
+	words = []string{""}
+
 	backgroundImg  *ebiten.Image
 	Font           font.Face
 	colorBlack     = color.RGBA{0, 0, 0, 255}
@@ -30,8 +29,6 @@ var ( //initialisation des variables
 	mainMenu       MainMenu
 	difficultyMenu DifficultyMenu
 	gameMenu       GameMenu
-	chosenWord     string
-	selectedLetter rune
 	gameInMenu     int
 )
 
@@ -53,7 +50,7 @@ func init() { //met en place les images et boutons du jeu
 		panic(err)
 	}
 	backgroundImg = img
-	
+
 	fontData, err := ioutil.ReadFile("./images/FFF_Tusj.ttf")
 	if err != nil {
 		log.Fatal(err)
@@ -159,39 +156,3 @@ func init() { //met en place les images et boutons du jeu
 		{X: 900, Y: 700, Width: 40, Height: 40, Label: "Z", Image: bkgImg, Active: true},
 	}
 }
-
-//lance ou quitte le jeu
-func Main(screen *ebiten.Image) error {
-	if err := screen.DrawImage(backgroundImg, nil); err != nil {
-		return err
-	}
-
-	for _, button := range mainMenu.Buttons {
-		button.TextColor = colorBlack
-		if button.Active {
-			mouseX, mouseY := ebiten.CursorPosition()
-			if mouseX >= button.X && mouseX <= button.X+button.Width && mouseY >= button.Y && mouseY <= button.Y+button.Height {
-				button.TextColor = colorRed
-			}
-			if ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
-				if mouseX >= button.X && mouseX <= button.X+button.Width && mouseY >= button.Y && mouseY <= button.Y+button.Height {
-					if button.Label == "Play" {
-
-						gameInMenu = 1
-					} else if button.Label == "Quit" {
-						fmt.Println("Goodbye!")
-						os.Exit(0)
-					}
-				}
-			}
-		}
-
-		op := &ebiten.DrawImageOptions{}
-		op.GeoM.Translate(float64(button.X), float64(button.Y))
-		screen.DrawImage(button.Image, op)
-
-		text.Draw(screen, button.Label, Font, button.X+65, button.Y+45, button.TextColor)
-	}
-	return nil
-}
-
