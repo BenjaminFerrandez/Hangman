@@ -5,6 +5,7 @@ import (
 	"image/color"
 	"math/rand"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -13,20 +14,16 @@ import (
 )
 
 var (
-	chosenWord     string
-	selectedLetter rune
+	chosenWord      string
+	selectedLetter  rune
 	guessedLetters  []rune
 	selectedLetters []rune
-	attemptsLeft int
-	letterButtonPressed bool
-
+	Essai           int64 = 6
 )
 
 //lance ou quitte le jeu
 func Main(screen *ebiten.Image) error {
-	if err := screen.DrawImage(backgroundImg, nil); err != nil {
-		return err
-	}
+	screen.DrawImage(backgroundImg, nil)
 
 	for _, button := range mainMenu.Buttons {
 		button.TextColor = colorBlack
@@ -117,402 +114,118 @@ func Difficulty(screen *ebiten.Image) error {
 //jeu
 func pendu(screen *ebiten.Image) error {
 	screen.Fill(color.White)
-	
-	if chosenWord == "" {
+	s := strconv.FormatInt(Essai, 10)
+	if chosenWord == "" || Essai == 0 {
 		rand.Seed(time.Now().UnixNano())
 		chosenWord = words[rand.Intn(len(words))]
-		attemptsLeft = 10
+		Essai = 6
+		selectedLetters = nil
 	}
 
 	guessedWord := make([]string, len(chosenWord))
-	text.Draw(screen, fmt.Sprintf("Attempts remaining: %d", attemptsLeft), Font, 20, 50, colorBlack)
-
-
+	text.Draw(screen, "Attempts remaining :", Font, 20, 50, colorBlack)
+	text.Draw(screen, s, Font, 360, 50, colorBlack)
 	for i := range guessedWord {
 		guessedWord[i] = "_"
 	}
 
 	for _, button := range gameMenu.Buttons {
 		button.TextColor = colorBlack
-		
+
 		mouseX, mouseY := ebiten.CursorPosition()
 		if mouseX >= button.X && mouseX <= button.X+button.Width && mouseY >= button.Y && mouseY <= button.Y+button.Height {
 			button.TextColor = colorRed
 		}
 
 		if ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
-			
-			if !letterButtonPressed { // Check if a letter button hasn't been pressed in this frame
-				mouseX, mouseY := ebiten.CursorPosition()
-				for _, button := range gameMenu.Buttons {
-					if mouseX >= button.X && mouseX <= button.X+button.Width && mouseY >= button.Y && mouseY <= button.Y+button.Height {
-						if button.Label == "A" {
-							selectedLetter = rune('a')
-		
-							if selectedLetter != 0 {
-								if strings.Contains(chosenWord, string(selectedLetter)) {
-									selectedLetters = append(selectedLetters, selectedLetter)
-								} else {
-									
-									if attemptsLeft > 0 {
-										attemptsLeft--
-									}
-								}
-							}
-							letterButtonPressed = true 
+			mouseX, mouseY := ebiten.CursorPosition()
+			for _, button := range gameMenu.Buttons {
+				if mouseX >= button.X && mouseX <= button.X+button.Width && mouseY >= button.Y && mouseY <= button.Y+button.Height {
+					if button.Label == "A" {
+						selectedLetter = rune('a')
 					} else if button.Label == "B" {
 						selectedLetter = rune('b')
 
-						if selectedLetter != 0 {
-								if strings.Contains(chosenWord, string(selectedLetter)) {
-									selectedLetters = append(selectedLetters, selectedLetter)
-								} else {
-									
-									if attemptsLeft > 0 {
-										attemptsLeft--
-									}
-								}
-							}
-							letterButtonPressed = true 
 					} else if button.Label == "C" {
 						selectedLetter = rune('c')
 
-						if selectedLetter != 0 {
-								if strings.Contains(chosenWord, string(selectedLetter)) {
-									selectedLetters = append(selectedLetters, selectedLetter)
-								} else {
-									
-									if attemptsLeft > 0 {
-										attemptsLeft--
-									}
-								}
-							}
-							letterButtonPressed = true 
 					} else if button.Label == "D" {
 						selectedLetter = rune('d')
 
-						if selectedLetter != 0 {
-								if strings.Contains(chosenWord, string(selectedLetter)) {
-									selectedLetters = append(selectedLetters, selectedLetter)
-								} else {
-									
-									if attemptsLeft > 0 {
-										attemptsLeft--
-									}
-								}
-							}
-							letterButtonPressed = true 
 					} else if button.Label == "E" {
 						selectedLetter = rune('e')
 
-						if selectedLetter != 0 {
-								if strings.Contains(chosenWord, string(selectedLetter)) {
-									selectedLetters = append(selectedLetters, selectedLetter)
-								} else {
-									
-									if attemptsLeft > 0 {
-										attemptsLeft--
-									}
-								}
-							}
-							letterButtonPressed = true 
 					} else if button.Label == "F" {
 						selectedLetter = rune('f')
 
-						if selectedLetter != 0 {
-								if strings.Contains(chosenWord, string(selectedLetter)) {
-									selectedLetters = append(selectedLetters, selectedLetter)
-								} else {
-									
-									if attemptsLeft > 0 {
-										attemptsLeft--
-									}
-								}
-							}
-							letterButtonPressed = true 
 					} else if button.Label == "G" {
 						selectedLetter = rune('g')
 
-						if selectedLetter != 0 {
-								if strings.Contains(chosenWord, string(selectedLetter)) {
-									selectedLetters = append(selectedLetters, selectedLetter)
-								} else {
-									
-									if attemptsLeft > 0 {
-										attemptsLeft--
-									}
-								}
-							}
-							letterButtonPressed = true 
 					} else if button.Label == "H" {
 						selectedLetter = rune('h')
 
-						if selectedLetter != 0 {
-								if strings.Contains(chosenWord, string(selectedLetter)) {
-									selectedLetters = append(selectedLetters, selectedLetter)
-								} else {
-									
-									if attemptsLeft > 0 {
-										attemptsLeft--
-									}
-								}
-							}
-							letterButtonPressed = true 
 					} else if button.Label == "I" {
 						selectedLetter = rune('i')
 
-						if selectedLetter != 0 {
-								if strings.Contains(chosenWord, string(selectedLetter)) {
-									selectedLetters = append(selectedLetters, selectedLetter)
-								} else {
-									
-									if attemptsLeft > 0 {
-										attemptsLeft--
-									}
-								}
-							}
-							letterButtonPressed = true 
 					} else if button.Label == "J" {
 						selectedLetter = rune('j')
 
-						if selectedLetter != 0 {
-								if strings.Contains(chosenWord, string(selectedLetter)) {
-									selectedLetters = append(selectedLetters, selectedLetter)
-								} else {
-									
-									if attemptsLeft > 0 {
-										attemptsLeft--
-									}
-								}
-							}
-							letterButtonPressed = true 
 					} else if button.Label == "K" {
 						selectedLetter = rune('k')
 
-						if selectedLetter != 0 {
-								if strings.Contains(chosenWord, string(selectedLetter)) {
-									selectedLetters = append(selectedLetters, selectedLetter)
-								} else {
-									
-									if attemptsLeft > 0 {
-										attemptsLeft--
-									}
-								}
-							}
-							letterButtonPressed = true 
 					} else if button.Label == "L" {
 						selectedLetter = rune('l')
 
-						if selectedLetter != 0 {
-								if strings.Contains(chosenWord, string(selectedLetter)) {
-									selectedLetters = append(selectedLetters, selectedLetter)
-								} else {
-									
-									if attemptsLeft > 0 {
-										attemptsLeft--
-									}
-								}
-							}
-							letterButtonPressed = true 
 					} else if button.Label == "M" {
 						selectedLetter = rune('m')
 
-						if selectedLetter != 0 {
-								if strings.Contains(chosenWord, string(selectedLetter)) {
-									selectedLetters = append(selectedLetters, selectedLetter)
-								} else {
-									
-									if attemptsLeft > 0 {
-										attemptsLeft--
-									}
-								}
-							}
-							letterButtonPressed = true 
 					} else if button.Label == "N" {
 						selectedLetter = rune('n')
 
-						if selectedLetter != 0 {
-								if strings.Contains(chosenWord, string(selectedLetter)) {
-									selectedLetters = append(selectedLetters, selectedLetter)
-								} else {
-									
-									if attemptsLeft > 0 {
-										attemptsLeft--
-									}
-								}
-							}
-							letterButtonPressed = true 
 					} else if button.Label == "O" {
 						selectedLetter = rune('o')
 
-						if selectedLetter != 0 {
-								if strings.Contains(chosenWord, string(selectedLetter)) {
-									selectedLetters = append(selectedLetters, selectedLetter)
-								} else {
-									
-									if attemptsLeft > 0 {
-										attemptsLeft--
-									}
-								}
-							}
-							letterButtonPressed = true 
 					} else if button.Label == "P" {
 						selectedLetter = rune('p')
 
-						if selectedLetter != 0 {
-								if strings.Contains(chosenWord, string(selectedLetter)) {
-									selectedLetters = append(selectedLetters, selectedLetter)
-								} else {
-									
-									if attemptsLeft > 0 {
-										attemptsLeft--
-									}
-								}
-							}
-							letterButtonPressed = true 
 					} else if button.Label == "Q" {
 						selectedLetter = rune('q')
 
-						if selectedLetter != 0 {
-								if strings.Contains(chosenWord, string(selectedLetter)) {
-									selectedLetters = append(selectedLetters, selectedLetter)
-								} else {
-									
-									if attemptsLeft > 0 {
-										attemptsLeft--
-									}
-								}
-							}
-							letterButtonPressed = true 
 					} else if button.Label == "R" {
 						selectedLetter = rune('r')
 
-						if selectedLetter != 0 {
-								if strings.Contains(chosenWord, string(selectedLetter)) {
-									selectedLetters = append(selectedLetters, selectedLetter)
-								} else {
-									
-									if attemptsLeft > 0 {
-										attemptsLeft--
-									}
-								}
-							}
-							letterButtonPressed = true 
 					} else if button.Label == "S" {
 						selectedLetter = rune('s')
 
-						if selectedLetter != 0 {
-								if strings.Contains(chosenWord, string(selectedLetter)) {
-									selectedLetters = append(selectedLetters, selectedLetter)
-								} else {
-									
-									if attemptsLeft > 0 {
-										attemptsLeft--
-									}
-								}
-							}
-							letterButtonPressed = true 
 					} else if button.Label == "T" {
 						selectedLetter = rune('t')
 
-						if selectedLetter != 0 {
-								if strings.Contains(chosenWord, string(selectedLetter)) {
-									selectedLetters = append(selectedLetters, selectedLetter)
-								} else {
-									
-									if attemptsLeft > 0 {
-										attemptsLeft--
-									}
-								}
-							}
-							letterButtonPressed = true 
 					} else if button.Label == "U" {
 						selectedLetter = rune('u')
 
-						if selectedLetter != 0 {
-								if strings.Contains(chosenWord, string(selectedLetter)) {
-									selectedLetters = append(selectedLetters, selectedLetter)
-								} else {
-									
-									if attemptsLeft > 0 {
-										attemptsLeft--
-									}
-								}
-							}
-							letterButtonPressed = true 
 					} else if button.Label == "V" {
 						selectedLetter = rune('v')
 
-						if selectedLetter != 0 {
-								if strings.Contains(chosenWord, string(selectedLetter)) {
-									selectedLetters = append(selectedLetters, selectedLetter)
-								} else {
-									
-									if attemptsLeft > 0 {
-										attemptsLeft--
-									}
-								}
-							}
-							letterButtonPressed = true 
 					} else if button.Label == "W" {
 						selectedLetter = rune('w')
 
-						if selectedLetter != 0 {
-								if strings.Contains(chosenWord, string(selectedLetter)) {
-									selectedLetters = append(selectedLetters, selectedLetter)
-								} else {
-									
-									if attemptsLeft > 0 {
-										attemptsLeft--
-									}
-								}
-							}
-							letterButtonPressed = true 
 					} else if button.Label == "X" {
 						selectedLetter = rune('x')
 
-						if selectedLetter != 0 {
-								if strings.Contains(chosenWord, string(selectedLetter)) {
-									selectedLetters = append(selectedLetters, selectedLetter)
-								} else {
-									
-									if attemptsLeft > 0 {
-										attemptsLeft--
-									}
-								}
-							}
-							letterButtonPressed = true 
 					} else if button.Label == "Y" {
 						selectedLetter = rune('y')
 
-						if selectedLetter != 0 {
-								if strings.Contains(chosenWord, string(selectedLetter)) {
-									selectedLetters = append(selectedLetters, selectedLetter)
-								} else {
-									
-									if attemptsLeft > 0 {
-										attemptsLeft--
-									}
-								}
-							}
-							letterButtonPressed = true 
 					} else if button.Label == "Z" {
 						selectedLetter = rune('z')
 
-						if selectedLetter != 0 {
-								if strings.Contains(chosenWord, string(selectedLetter)) {
-									selectedLetters = append(selectedLetters, selectedLetter)
-								} else {
-									
-									if attemptsLeft > 0 {
-										attemptsLeft--
-									}
-								}
-							}
-							letterButtonPressed = true 
 					}
-				}
-				
+					if selectedLetter != 0 {
+						if strings.Contains(chosenWord, string(selectedLetter)) {
+							selectedLetters = append(selectedLetters, selectedLetter)
+						} else {
+							handleLetterSelection(button.Label)
+						}
+					}
 					break
 				}
 			}
@@ -522,33 +235,109 @@ func pendu(screen *ebiten.Image) error {
 		op := &ebiten.DrawImageOptions{}
 		op.GeoM.Translate(float64(button.X), float64(button.Y))
 		screen.DrawImage(button.Image, op)
-		
+
 		text.Draw(screen, button.Label, Font, button.X+13, button.Y+34, button.TextColor)
 		if gameInMenu == 2 {
-			text.Draw(screen, strings.Join(guessedWord, " "), Font, 575, 600, button.TextColor)
+			text.Draw(screen, strings.Join(guessedWord, " "), Font, 575, 600, colorBlack)
 		} else if gameInMenu == 3 {
-			text.Draw(screen, strings.Join(guessedWord, " "), Font, 550, 600, button.TextColor)
+			text.Draw(screen, strings.Join(guessedWord, " "), Font, 550, 600, colorBlack)
 		} else if gameInMenu == 4 {
-			text.Draw(screen, strings.Join(guessedWord, " "), Font, 500, 600, button.TextColor)
+			text.Draw(screen, strings.Join(guessedWord, " "), Font, 500, 600, colorBlack)
 		} else if gameInMenu == 5 {
-			text.Draw(screen, strings.Join(guessedWord, " "), Font, 450, 600, button.TextColor)
+			text.Draw(screen, strings.Join(guessedWord, " "), Font, 450, 600, colorBlack)
 		}
+		//check for victory
+		if strings.Join(updateGuessedWord(chosenWord, selectedLetters), "") == chosenWord {
+			chosenWord = ""
+			Essai = 6
+			selectedLetters = nil
 
+			gameInMenu = -2
+		}
 	}
 
+	return nil
+}
+func handleLetterSelection(buttonLabel string) {
+	selectedLetter = rune(buttonLabel[0])
+	if selectedLetter != 0 && !contains(selectedLetters, selectedLetter) {
+		selectedLetters = append(selectedLetters, selectedLetter)
+		if !strings.Contains(chosenWord, string(selectedLetter)) {
+			Essai -= 1
+
+		}
+		if Essai == 0 {
+			gameInMenu = -1
+
+		}
+	}
+}
+func defeat(screen *ebiten.Image) error {
+	screen.DrawImage(backgroundLose, nil)
+	text.Draw(screen, "You lose", Font, 600, 475, colorBlack)
+	for _, button := range lastMenu.Buttons {
+		button.TextColor = colorBlack
+		if button.Active {
+			mouseX, mouseY := ebiten.CursorPosition()
+			if mouseX >= button.X && mouseX <= button.X+button.Width && mouseY >= button.Y && mouseY <= button.Y+button.Height {
+				button.TextColor = colorRed
+			}
+			if ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
+				if mouseX >= button.X && mouseX <= button.X+button.Width && mouseY >= button.Y && mouseY <= button.Y+button.Height {
+
+					if button.Label == "Return" {
+						gameInMenu = 0
+					}
+				}
+			}
+		}
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Translate(float64(button.X), float64(button.Y))
+		screen.DrawImage(button.Image, op)
+		text.Draw(screen, button.Label, Font, button.X+45, button.Y+45, button.TextColor)
+	}
+	return nil
+
+}
+func victory(screen *ebiten.Image) error {
+	screen.DrawImage(backgroundWin, nil)
+	text.Draw(screen, "You won", Font, 655, 610, colorBlack)
+	for _, button := range winMenu.Buttons {
+		button.TextColor = colorBlack
+		if button.Active {
+			mouseX, mouseY := ebiten.CursorPosition()
+			if mouseX >= button.X && mouseX <= button.X+button.Width && mouseY >= button.Y && mouseY <= button.Y+button.Height {
+				button.TextColor = colorRed
+			}
+			if ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
+				if mouseX >= button.X && mouseX <= button.X+button.Width && mouseY >= button.Y && mouseY <= button.Y+button.Height {
+
+					if button.Label == "Return" {
+						gameInMenu = 0
+					}
+				}
+			}
+		}
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Translate(float64(button.X), float64(button.Y))
+		screen.DrawImage(button.Image, op)
+		text.Draw(screen, button.Label, Font, button.X+45, button.Y+45, button.TextColor)
+	}
 	return nil
 }
 
 //relance une partie ou quitte le jeu
 func update(screen *ebiten.Image) error {
-
 	if gameInMenu == 1 {
-
 		return Difficulty(screen)
 	} else if gameInMenu == 0 {
 		return Main(screen)
 	} else if gameInMenu > 1 {
 		return pendu(screen)
+	} else if gameInMenu == -1 {
+		return defeat(screen)
+	} else if gameInMenu == -2 {
+		return victory(screen)
 	}
 	return nil
 }

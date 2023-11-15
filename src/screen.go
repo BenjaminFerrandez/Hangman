@@ -23,12 +23,16 @@ var ( //initialisation des variables
 	words = []string{""}
 
 	backgroundImg  *ebiten.Image
+	backgroundLose *ebiten.Image
+	backgroundWin  *ebiten.Image
 	Font           font.Face
 	colorBlack     = color.RGBA{0, 0, 0, 255}
 	colorRed       = color.RGBA{255, 0, 0, 255}
 	mainMenu       MainMenu
 	difficultyMenu DifficultyMenu
 	gameMenu       GameMenu
+	lastMenu       LastMenu
+	winMenu        WinMenu
 	gameInMenu     int
 )
 
@@ -42,6 +46,12 @@ type DifficultyMenu struct {
 type GameMenu struct {
 	Buttons []Button
 }
+type LastMenu struct {
+	Buttons []Button
+}
+type WinMenu struct {
+	Buttons []Button
+}
 
 func init() { //met en place les images et boutons du jeu
 	// Download image
@@ -50,6 +60,18 @@ func init() { //met en place les images et boutons du jeu
 		panic(err)
 	}
 	backgroundImg = img
+
+	loseImg, _, err := ebitenutil.NewImageFromFile("./images/lose.png", ebiten.FilterDefault)
+	if err != nil {
+		panic(err)
+	}
+	backgroundLose = loseImg
+
+	winImg, _, err := ebitenutil.NewImageFromFile("./images/win.png", ebiten.FilterDefault)
+	if err != nil {
+		panic(err)
+	}
+	backgroundWin = winImg
 
 	fontData, err := ioutil.ReadFile("./images/FFF_Tusj.ttf")
 	if err != nil {
@@ -118,14 +140,16 @@ func init() { //met en place les images et boutons du jeu
 		{X: 900, Y: 550, Width: 170, Height: 60, Label: "Larousse", Image: larousseImg, Active: true},
 		{X: 720, Y: 650, Width: 170, Height: 60, Label: "Return", Image: returnImg, Active: true},
 	}
+	lastMenu.Buttons = []Button{
+		{X: 550, Y: 550, Width: 170, Height: 60, Label: "Return", Image: returnImg, Active: true},
+	}
+	winMenu.Buttons = []Button{
+		{X: 625, Y: 670, Width: 170, Height: 60, Label: "Return", Image: returnImg, Active: true},
+	}
 	bkgImg, _, err := ebitenutil.NewImageFromFile("./images/bkg.png", ebiten.FilterDefault)
 	if err != nil {
 		log.Fatal(err)
 	}
-	//quitImg, _, err := ebitenutil.NewImageFromFile("./images/bkg.png", ebiten.FilterDefault)
-	//if err != nil {
-	//log.Fatal(err)
-	//}
 
 	gameMenu.Buttons = []Button{ //placement des boutons de lettre
 		{X: 300, Y: 650, Width: 40, Height: 40, Label: "A", Image: bkgImg, Active: true},
